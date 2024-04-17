@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  docker-obs:
+    image: docker-obs
+    environment:
+      VNC_PASSWD: "123456"
+      # OBS_START_STREAMING: true
+      # OBS_START_RECORDING: true
+      # OBS_MINIMIZE_TO_TRAY: true
+    ports:
+      - "5901:5901"
+    volumes:
+      - config:/config
+      - recordings:/recordings
+
+volumes:
+  config:
+  recordings:
