@@ -15,6 +15,7 @@ Heavily "inspired" by [`bandi13/docker-obs`](https://github.com/bandi13/docker-o
 
 ## Usage
 
+- Build the image
 - Run the `docker-compose.yml`
 - Connect to `http://<server-ip>:5901` in the Browser
 - Login using the `VNC_PASSWD` (default: `123456`)
