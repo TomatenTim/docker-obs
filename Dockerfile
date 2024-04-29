@@ -14,10 +14,20 @@ ENV PGID=1000
 
 
 # Make sure the dependencies are met
-ENV APT_INSTALL_PRE="apt -o Acquire::ForceIPv4=true update && DEBIAN_FRONTEND=noninteractive apt -o Acquire::ForceIPv4=true install -y --no-install-recommends"
-ENV APT_INSTALL_POST="&& apt clean -y && rm -rf /var/lib/apt/lists/*"
-# Make sure the dependencies are met
-RUN eval ${APT_INSTALL_PRE} tigervnc-standalone-server tigervnc-common tigervnc-tools fluxbox eterm xterm git net-tools python3 python3-numpy ca-certificates scrot ${APT_INSTALL_POST}
+RUN apt-get update -y 
+RUN apt-get install -y --no-install-recommends \
+    tigervnc-standalone-server \
+    tigervnc-common \
+    tigervnc-tools \
+    fluxbox \
+    eterm \
+    xterm \
+    git \
+    net-tools \
+    python3 \
+    python3-numpy \
+    ca-certificates \
+    scrot
 
 # Install VNC. Requires net-tools, python and python-numpy
 RUN git clone --branch v1.4.0 --single-branch https://github.com/novnc/noVNC.git /opt/noVNC
@@ -28,13 +38,14 @@ RUN ln -s /opt/noVNC/vnc.html /opt/noVNC/index.html
 RUN echo "?package(bash):needs=\"X11\" section=\"DockerCustom\" title=\"Xterm\" command=\"xterm -ls -bg black -fg white\"" >> /usr/share/menu/custom-docker && update-menus
 
 # Install OBS
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt-get update -y \
-    && apt-get install -y software-properties-common \
-    && add-apt-repository ppa:obsproject/obs-studio \
-    && apt-get update -y \
-    && apt-get install -y obs-studio \
-    && apt-get clean -y
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:obsproject/obs-studio
+RUN apt-get update -y
+RUN apt-get install -y obs-studio
+
+# Clean
+RUN apt-get clean -y
+RUN rm -rf /var/lib/apt/lists/*
 
 # Add OBS entry to the container
 RUN echo "?package(bash):needs=\"X11\" section=\"DockerCustom\" title=\"OBS Screencast\" command=\"obs\"" >> /usr/share/menu/custom-docker && update-menus
