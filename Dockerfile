@@ -37,6 +37,9 @@ RUN ln -s /opt/noVNC/vnc.html /opt/noVNC/index.html
 # Add Xterm entry to the container
 RUN echo "?package(bash):needs=\"X11\" section=\"DockerCustom\" title=\"Xterm\" command=\"xterm -ls -bg black -fg white\"" >> /usr/share/menu/custom-docker && update-menus
 
+# Install Fonts
+RUN apt-get install -y fonts-noto
+
 # Install OBS
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:obsproject/obs-studio
